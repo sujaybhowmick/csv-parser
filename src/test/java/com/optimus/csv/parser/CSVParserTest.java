@@ -16,7 +16,7 @@ import java.util.Iterator;
  * Time: 7:44 PM
  * To change this template use File | Settings | File Templates.
  */
-public class CSVGrammarVisitorImplTest {
+public class CSVParserTest {
 
 
     @Test
@@ -35,7 +35,7 @@ public class CSVGrammarVisitorImplTest {
 
         ParseTree tree = parser.file();
 
-        CSVGrammarVisitorImpl visitor = new CSVGrammarVisitorImpl();
+        CSVParser visitor = new CSVParser();
 
         visitor.visit(tree);
 

@@ -11,7 +11,7 @@ import java.util.*;
  * Time: 12:11 PM
  * To change this template use File | Settings | File Templates.
  */
-class CSVGrammarVisitorImpl extends CSVGrammarBaseVisitor<Void>
+class CSVParser extends CSVGrammarBaseVisitor<Void>
         implements Iterable<CSVRecord> {
 
     private List<CSVRecord> records = new ArrayList<CSVRecord>();
