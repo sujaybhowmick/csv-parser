@@ -27,12 +27,14 @@ public class CSVParserTest {
         assertNotNull(records);
 
         assertTrue(records.hasNext());
-
+        int i = 0;
         while(records.hasNext()){
             CSVRecord record = records.next();
+            System.out.println(record.getRecordNumber());
             System.out.println(record.get("Details"));
             System.out.println(record.get("Month"));
             System.out.println(record.get("Amount"));
+            assertEquals(i++, record.getRecordNumber());
         }
 
     }
