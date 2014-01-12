@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +20,7 @@ public class CSVGrammarVisitorImplTest {
 
 
     @Test
-    public void testVisitRow() throws Exception{
+    public void testCSVParse() throws Exception{
         String inputFile = "src/test/resources/test.csv";
 
         InputStream is = new FileInputStream(inputFile);
@@ -37,5 +38,15 @@ public class CSVGrammarVisitorImplTest {
         CSVGrammarVisitorImpl visitor = new CSVGrammarVisitorImpl();
 
         visitor.visit(tree);
+
+        Iterator<CSVRecord> records = visitor.iterator();
+
+        while(records.hasNext()){
+            CSVRecord record = records.next();
+            System.out.println(record.get("Details"));
+            System.out.println(record.get("Month"));
+            System.out.println(record.get("Amount"));
+        }
+
     }
 }

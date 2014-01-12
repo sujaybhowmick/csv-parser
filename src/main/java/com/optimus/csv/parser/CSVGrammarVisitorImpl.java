@@ -2,10 +2,7 @@ package com.optimus.csv.parser;
 
 import org.antlr.v4.runtime.misc.NotNull;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,12 +11,15 @@ import java.util.Map;
  * Time: 12:11 PM
  * To change this template use File | Settings | File Templates.
  */
-class CSVGrammarVisitorImpl extends CSVGrammarBaseVisitor<Void> {
+class CSVGrammarVisitorImpl extends CSVGrammarBaseVisitor<Void>
+        implements Iterable<CSVRecord> {
 
-    private List<Map<String, String>> records =
-                                        new ArrayList<Map<String, String>>();
+    private List<CSVRecord> records = new ArrayList<CSVRecord>();
 
-    private List<String> header;
+
+    private Map<String, Integer> mapping;
+
+    private int recordNumber = 0;
 
     @Override
     public Void visitEmpty(@NotNull CSVGrammarParser.EmptyContext ctx) {
@@ -29,27 +29,30 @@ class CSVGrammarVisitorImpl extends CSVGrammarBaseVisitor<Void> {
     @Override
     public Void visitRow(@NotNull CSVGrammarParser.RowContext ctx) {
         List<CSVGrammarParser.FieldContext> fieldContexts = ctx.field();
-        int i = 0;
-        Map<String, String> m = new LinkedHashMap<String, String>();
+        List<String> values = new ArrayList<String>();
+
         for(CSVGrammarParser.FieldContext f: fieldContexts){
-            m.put(header.get(i), f.getText());
-            i++;
+            values.add(f.getText());
+
         }
-        records.add(m);
+        this.records.add(new CSVRecord(values.toArray(new String[]{}),
+                                mapping, recordNumber++));
         return null;
     }
 
     @Override
     public Void visitHdr(@NotNull CSVGrammarParser.HdrContext hdrCtx) {
-        header = new ArrayList<String>();
+        mapping = new LinkedHashMap<String, Integer>();
         List<CSVGrammarParser.FieldContext> fieldContexts = hdrCtx.row().field();
+        Integer index = 0;
         for(CSVGrammarParser.FieldContext f: fieldContexts){
-            header.add(f.getText());
+            mapping.put(f.getText(), index++);
         }
         return null;
     }
 
-    public List<Map<String, String>> getRecords(){
-        return this.records;
+    @Override
+    public Iterator<CSVRecord> iterator() {
+        return records.iterator();
     }
 }

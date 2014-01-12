@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 public class CSVUtil {
 
-    public static List<Map<String, String>> parse(InputStream is)
+    public static Iterator<CSVRecord> parse(InputStream is)
             throws Exception {
         ANTLRInputStream input = new ANTLRInputStream(is);
 
@@ -35,20 +36,19 @@ public class CSVUtil {
 
         visitor.visit(tree);
 
-        return visitor.getRecords();
+        return visitor.iterator();
 
     }
 
-    public static List<Map<String, String>> parse(String fileName)
+    public static Iterator<CSVRecord> parse(String fileName)
             throws Exception {
 
         InputStream is = new FileInputStream(new File(fileName));
         return parse(is);
     }
 
-    public static List<Map<String, String>> parse(File file)
+    public static Iterator<CSVRecord> parse(File file)
             throws Exception {
-
         InputStream is = new FileInputStream(file);
         return parse(is);
     }
