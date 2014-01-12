@@ -1,13 +1,10 @@
 package com.optimus.csv.parser;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.Test;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.Iterator;
+
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,26 +17,16 @@ public class CSVParserTest {
 
 
     @Test
-    public void testCSVParse() throws Exception{
+    public void testParse() throws Exception{
         String inputFile = "src/test/resources/test.csv";
 
-        InputStream is = new FileInputStream(inputFile);
+        CSVParser parser = new CSVParserImpl();
 
-        ANTLRInputStream input = new ANTLRInputStream(is);
+        Iterator<CSVRecord> records = parser.parse(inputFile);
 
-        CSVGrammarLexer lexer = new CSVGrammarLexer(input);
+        assertNotNull(records);
 
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-        CSVGrammarParser parser = new CSVGrammarParser(tokens);
-
-        ParseTree tree = parser.file();
-
-        CSVParser visitor = new CSVParser();
-
-        visitor.visit(tree);
-
-        Iterator<CSVRecord> records = visitor.iterator();
+        assertTrue(records.hasNext());
 
         while(records.hasNext()){
             CSVRecord record = records.next();
