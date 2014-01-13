@@ -21,9 +21,9 @@ public class CSVParserTest {
     public void testParse() throws Exception{
         String inputFile = "src/test/resources/test.csv";
 
-        CSVParser parser = new CSVParserImpl();
+        CSVParser parser = new CSVParserImpl(inputFile);
 
-        Iterator<CSVRecord> records = parser.parse(inputFile);
+        Iterator<CSVRecord> records = parser.iterator();
 
         assertNotNull(records);
 

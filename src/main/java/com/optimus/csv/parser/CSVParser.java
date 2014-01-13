@@ -14,10 +14,6 @@ import java.util.List;
  */
 public interface CSVParser extends Iterable<CSVRecord> {
 
-    Iterator<CSVRecord> parse(final String fileName) throws IOException;
-
-    Iterator<CSVRecord> parse(final InputStream is) throws IOException;
-
     List<CSVRecord> getRecords();
 
     int size();

@@ -27,6 +27,25 @@ public class CSVParserImpl extends CSVGrammarBaseVisitor<Void>
 
     private int recordNumber = 0;
 
+    private InputStream is;
+
+
+    public CSVParserImpl(final InputStream is){
+        try {
+            parse(is);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public CSVParserImpl(final String fileName){
+        try {
+            parse(fileName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public Void visitEmpty(@NotNull CSVGrammarParser.EmptyContext ctx) {
         return super.visitEmpty(ctx);
@@ -68,14 +87,14 @@ public class CSVParserImpl extends CSVGrammarBaseVisitor<Void>
         return records.iterator();
     }
 
-    @Override
-    public Iterator<CSVRecord> parse(String fileName) throws IOException {
+
+    private void parse(final String fileName) throws IOException {
         InputStream is = new FileInputStream(fileName);
-        return parse(is);
+        parse(is);
     }
 
-    @Override
-    public Iterator<CSVRecord> parse(final InputStream is) throws IOException {
+
+    private void parse(final InputStream is) throws IOException {
         ANTLRInputStream input = new ANTLRInputStream(is);
 
         CSVGrammarLexer lexer = new CSVGrammarLexer(input);
@@ -87,8 +106,6 @@ public class CSVParserImpl extends CSVGrammarBaseVisitor<Void>
         ParseTree tree = parser.file();
 
         visit(tree);
-
-        return iterator();
     }
 
     @Override
