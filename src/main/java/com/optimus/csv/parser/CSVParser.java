@@ -3,6 +3,7 @@ package com.optimus.csv.parser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,4 +17,8 @@ public interface CSVParser extends Iterable<CSVRecord> {
     Iterator<CSVRecord> parse(final String fileName) throws IOException;
 
     Iterator<CSVRecord> parse(final InputStream is) throws IOException;
+
+    List<CSVRecord> getRecords();
+
+    int size();
 }

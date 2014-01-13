@@ -3,6 +3,7 @@ package com.optimus.csv.parser;
 import org.junit.Test;
 
 import java.util.Iterator;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -27,7 +28,9 @@ public class CSVParserTest {
         assertNotNull(records);
 
         assertTrue(records.hasNext());
+
         int i = 0;
+
         while(records.hasNext()){
             CSVRecord record = records.next();
             System.out.println(record.getRecordNumber());
@@ -37,5 +40,10 @@ public class CSVParserTest {
             assertEquals(i++, record.getRecordNumber());
         }
 
+        List<CSVRecord> list = parser.getRecords();
+
+        assertTrue(list.size() > 0);
+
+        assertTrue(parser.size() == 4);
     }
 }

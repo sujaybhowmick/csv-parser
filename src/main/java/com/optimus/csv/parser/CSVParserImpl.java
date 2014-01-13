@@ -34,13 +34,15 @@ public class CSVParserImpl extends CSVGrammarBaseVisitor<Void>
 
     @Override
     public Void visitRow(@NotNull CSVGrammarParser.RowContext ctx) {
+
         List<CSVGrammarParser.FieldContext> fieldContexts = ctx.field();
+
         List<String> values = new ArrayList<String>();
 
         for(CSVGrammarParser.FieldContext f: fieldContexts){
             values.add(f.getText());
-
         }
+
         this.records.add(new CSVRecord(values.toArray(new String[]{}),
                                 mapping, recordNumber++));
         return null;
@@ -48,9 +50,13 @@ public class CSVParserImpl extends CSVGrammarBaseVisitor<Void>
 
     @Override
     public Void visitHdr(@NotNull CSVGrammarParser.HdrContext hdrCtx) {
+
         mapping = new LinkedHashMap<String, Integer>();
+
         List<CSVGrammarParser.FieldContext> fieldContexts = hdrCtx.row().field();
+
         Integer index = 0;
+
         for(CSVGrammarParser.FieldContext f: fieldContexts){
             mapping.put(f.getText(), index++);
         }
@@ -80,10 +86,18 @@ public class CSVParserImpl extends CSVGrammarBaseVisitor<Void>
 
         ParseTree tree = parser.file();
 
-        CSVParserImpl visitor = new CSVParserImpl();
+        visit(tree);
 
-        visitor.visit(tree);
+        return iterator();
+    }
 
-        return visitor.iterator();
+    @Override
+    public List<CSVRecord> getRecords() {
+        return records;
+    }
+
+    @Override
+    public int size() {
+        return records.size();
     }
 }
